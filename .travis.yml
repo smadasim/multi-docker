@@ -15,9 +15,9 @@ after_success:
   - docker build -t smdasim/multi-nginx ./nginx
   - docker build -t smdasim/multi-server ./server
   - docker build -t smdasim/multi-worker ./worker
-   # # Log in to the docker CLI upadte cmd
+   # # Log in to the docker CLI upadte cmd #
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-   # # Take those images and push them to docker hub
+   # # Take those images and push them to docker hub #
   - docker push smdasim/multi-client
   - docker push smdasim/multi-nginx
   - docker push smdasim/multi-server
