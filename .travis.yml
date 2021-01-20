@@ -1,0 +1,24 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t smdasim/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true smdasim/react-test npm test
+
+after_success:
+  - docker build -t smdasim/multi-client ./client
+  - docker build -t smdasim/multi-nginx ./nginx
+  - docker build -t smdasim/multi-server ./server
+  - docker build -t smdasim/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push smdasim/multi-client
+  - docker push smdasim/multi-nginx
+  - docker push smdasim/multi-server
+  - docker push smdasim/multi-worker
